@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
-
 import json
 import os
 import sys
+from typing import List
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
-import decorators
-from typings import ListOfStrs
-from utility import atomic_write
+from democritus_file_system import atomic_write, file_exists, file_read
+
+from .json_data_temp_utils import json_read_first_arg_string
 
 
-def json_files(directory_path: str) -> ListOfStrs:
+def json_files(directory_path: str) -> List[str]:
     """Find all json files in the given directory_path."""
-    from directories import directory_file_names_matching
+    from democritus_file_system import directory_file_names_matching
 
     pattern = '*.json'
     files = directory_file_names_matching(directory_path, pattern)
@@ -20,17 +18,12 @@ def json_files(directory_path: str) -> ListOfStrs:
     return files
 
 
-def json_read(json_path):
+def json_read(json_string: str):
     import re
 
-    from utility import request_or_read
-
-    # TODO: this should be a decorator - this also needs to be applied in other places (e.g. html and yaml data)
-    json_string = request_or_read(json_path)
-
-    # if the json_path is a url, request_or_read will return a dict
-    if isinstance(json_string, dict):
-        return json_string
+    # TODO: do more here to make sure the path looks like a file path
+    if file_exists(json_string):
+        json_string = file_read(json_string)
 
     try:
         return json.loads(json_string)
@@ -61,7 +54,7 @@ def json_write(file_path, json_content, **kwargs):
     # # TODO: need to make the x_write functions consistent across different types (e.g. the yaml_write function returns a string while this function actually writes content)
 
 
-@decorators.json_read_first_arg_string
+@json_read_first_arg_string
 def json_prettify(json_object):
     """."""
     pretty_json = json.dumps(json_object, indent=4)
@@ -75,7 +68,6 @@ def json_pretty_print(json_string):
 
 def _create_json_structure(json_data, path='', json_structure=''):
     """Create a json structure (as a string) for the given json_data."""
-    from python_data import python_type_name
     from strings import cardinalize
 
     # the `tab` variable is blank on purpose.... I left it in the code so that it can be changed at a later date, but I think it looks best without using the tab
@@ -90,7 +82,7 @@ def _create_json_structure(json_data, path='', json_structure=''):
             new_path = path + "['{}']".format(key)
             if isinstance(value, list) or isinstance(value, dict):
                 json_structure = json_structure + '\n{} (list of {} {})'.format(
-                    new_path, len(value), cardinalize(python_type_name(type(value)), count=len(value))
+                    new_path, len(value), cardinalize(type(value).__name__), count=len(value)
                 )
                 json_structure = _create_json_structure(value, path=new_path, json_structure=json_structure)
             else:
@@ -104,7 +96,7 @@ def _create_json_structure(json_data, path='', json_structure=''):
     return json_structure.strip()
 
 
-@decorators.json_read_first_arg_string
+@json_read_first_arg_string
 def json_search(json_data, value_to_find):
     """Find the value_to_find in the json_data."""
     json_structure = _create_json_structure(json_data)
@@ -121,7 +113,7 @@ def json_search(json_data, value_to_find):
     return paths
 
 
-@decorators.json_read_first_arg_string
+@json_read_first_arg_string
 def json_structure(json_data):
     """Print out the structure of the given json blob."""
     structure = _create_json_structure(json_data)
