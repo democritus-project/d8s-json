@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 
 import pytest
@@ -14,9 +12,8 @@ from democritus_json import (
     json_files,
     json_write,
 )
-from directories import directory_create, directory_delete
-from files import file_read, file_write, file_delete, file_exists
-from dates_and_times import date_now
+from democritus_file_system import directory_create, directory_delete, file_read, file_write, file_delete, file_exists
+from democritus_dates import date_now
 
 NON_EXISTENT_FILE_PATH = './foo'
 TEST_DIRECTORY_PATH = './test_files'
