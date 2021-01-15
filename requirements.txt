@@ -1,1 +1,2 @@
 democritus-file-system @ git+https://github.com/democritus-project/democritus-file-system.git#egg=democritus-file-system
+democritus-strings @ git+https://github.com/democritus-project/democritus-strings.git#egg=democritus-strings

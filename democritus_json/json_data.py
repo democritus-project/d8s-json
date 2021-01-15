@@ -68,7 +68,7 @@ def json_pretty_print(json_string):
 
 def _create_json_structure(json_data, path='', json_structure=''):
     """Create a json structure (as a string) for the given json_data."""
-    from strings import cardinalize
+    from democritus_strings import cardinalize
 
     # the `tab` variable is blank on purpose.... I left it in the code so that it can be changed at a later date, but I think it looks best without using the tab
     tab = ''
@@ -82,7 +82,7 @@ def _create_json_structure(json_data, path='', json_structure=''):
             new_path = path + "['{}']".format(key)
             if isinstance(value, list) or isinstance(value, dict):
                 json_structure = json_structure + '\n{} (list of {} {})'.format(
-                    new_path, len(value), cardinalize(type(value).__name__), count=len(value)
+                    new_path, len(value), cardinalize(type(value).__name__, len(value))
                 )
                 json_structure = _create_json_structure(value, path=new_path, json_structure=json_structure)
             else:
