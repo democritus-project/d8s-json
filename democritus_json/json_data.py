@@ -151,4 +151,3 @@ def json_path_bracket_notation_to_dot_notation(json_path_dot_notation: str) -> s
     new_path = new_path.replace("']['", replacement_character)
     new_path = new_path.replace("\"][\"", replacement_character)
     return new_path
-

@@ -11,6 +11,7 @@ from democritus_json import (
     json_path_bracket_notation_to_dot_notation,
     json_files,
     json_write,
+    json_read_first_arg_string_decorator,
 )
 from democritus_file_system import directory_create, directory_delete, file_read, file_write, file_delete, file_exists
 from democritus_dates import date_now
@@ -211,3 +212,17 @@ def test_json_search_1():
     ]
     paths = json_search(foo, 'C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA')
     assert paths == ["[4]['a'][0]['_value']"]
+
+
+@json_read_first_arg_string_decorator
+def json_read_first_arg_string_decorator_test_func_a(a):
+    """."""
+    return a
+
+
+def test_json_read_first_arg_string_decorator_1():
+    assert json_read_first_arg_string_decorator_test_func_a('{}') == {}
+    assert json_read_first_arg_string_decorator_test_func_a({}) == {}
+    assert json_read_first_arg_string_decorator_test_func_a('[{"name": "Bob", "daring": true}]') == [
+        {'name': 'Bob', 'daring': True}
+    ]
