@@ -1,11 +1,8 @@
+import functools
 import json
-import os
-import sys
 from typing import List
 
 from democritus_file_system import atomic_write, file_exists, file_read
-
-from .json_data_temp_utils import json_read_first_arg_string
 
 
 def json_files(directory_path: str) -> List[str]:
@@ -45,6 +42,23 @@ def json_read(json_string: str):
             raise e
 
 
+def json_read_first_arg_string_decorator(func):
+    """Load the first argument as JSON (if it is a string)."""
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        first_arg = args[0]
+        other_args = args[1:]
+
+        if isinstance(first_arg, str):
+            first_arg_json = json_read(first_arg)
+            return func(first_arg_json, *other_args, **kwargs)
+        else:
+            return func(*args, **kwargs)
+
+    return wrapper
+
+
 def json_write(file_path, json_content, **kwargs):
     """Write the json_content to the file_path."""
     with atomic_write(file_path) as f:
@@ -54,7 +68,7 @@ def json_write(file_path, json_content, **kwargs):
     # # TODO: need to make the x_write functions consistent across different types (e.g. the yaml_write function returns a string while this function actually writes content)
 
 
-@json_read_first_arg_string
+@json_read_first_arg_string_decorator
 def json_prettify(json_object):
     """."""
     pretty_json = json.dumps(json_object, indent=4)
@@ -96,7 +110,7 @@ def _create_json_structure(json_data, path='', json_structure=''):
     return json_structure.strip()
 
 
-@json_read_first_arg_string
+@json_read_first_arg_string_decorator
 def json_search(json_data, value_to_find):
     """Find the value_to_find in the json_data."""
     json_structure = _create_json_structure(json_data)
@@ -113,7 +127,7 @@ def json_search(json_data, value_to_find):
     return paths
 
 
-@json_read_first_arg_string
+@json_read_first_arg_string_decorator
 def json_structure(json_data):
     """Print out the structure of the given json blob."""
     structure = _create_json_structure(json_data)
@@ -137,3 +151,4 @@ def json_path_bracket_notation_to_dot_notation(json_path_dot_notation: str) -> s
     new_path = new_path.replace("']['", replacement_character)
     new_path = new_path.replace("\"][\"", replacement_character)
     return new_path
+
