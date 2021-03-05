@@ -18,7 +18,6 @@ def json_files(directory_path: str) -> List[str]:
 def json_read(json_string: str):
     import re
 
-    # TODO: do more here to make sure the path looks like a file path
     if file_exists(json_string):
         json_string = file_read(json_string)
 
@@ -37,7 +36,7 @@ def json_read(json_string: str):
                         second_error
                     )
                 )
-                raise e
+                raise e  # pylint: disable=W0707
         else:
             raise e
 
@@ -64,9 +63,6 @@ def json_write(file_path, json_content, **kwargs):
     with atomic_write(file_path) as f:
         json.dump(json_content, f, **kwargs)
 
-    # # TODO: would like to return a bool from this function (like the file_write function)
-    # # TODO: need to make the x_write functions consistent across different types (e.g. the yaml_write function returns a string while this function actually writes content)
-
 
 @json_read_first_arg_string_decorator
 def json_prettify(json_object):
@@ -84,7 +80,8 @@ def _create_json_structure(json_data, path='', json_structure=''):
     """Create a json structure (as a string) for the given json_data."""
     from democritus_strings import cardinalize
 
-    # the `tab` variable is blank on purpose.... I left it in the code so that it can be changed at a later date, but I think it looks best without using the tab
+    # the `tab` variable is blank on purpose....
+    # I left it in the code so that it can be changed at a later date, but I think it looks best without using the tab
     tab = ''
     if isinstance(json_data, list):
         for index, i in enumerate(json_data):
@@ -113,12 +110,11 @@ def _create_json_structure(json_data, path='', json_structure=''):
 @json_read_first_arg_string_decorator
 def json_search(json_data, value_to_find):
     """Find the value_to_find in the json_data."""
-    json_structure = _create_json_structure(json_data)
+    _json_structure = _create_json_structure(json_data)
 
     paths = []
 
-    for entry in json_structure.split('\n'):
-        # TODO: this will not work if the key has a colon in it
+    for entry in _json_structure.split('\n'):
         path = entry.split(':')[0]
         value = ':'.join(entry.split(':')[1:]).strip()
         if value_to_find in value:
@@ -138,6 +134,7 @@ def json_structure(json_data):
 
 
 def json_path_dot_notation_to_bracket_notation(json_path_dot_notation: str) -> str:
+    """Convert the given json path from dot notation to bracket notation (foo.bar -> ["foo"]["bar"])."""
     if json_path_dot_notation == '':
         return ''
     replacement_characters = '"]["'
@@ -146,6 +143,7 @@ def json_path_dot_notation_to_bracket_notation(json_path_dot_notation: str) -> s
 
 
 def json_path_bracket_notation_to_dot_notation(json_path_dot_notation: str) -> str:
+    """Convert the given json path from bracket notation to dot notation (["foo"]["bar"] -> foo.bar)."""
     replacement_character = '.'
     new_path = json_path_dot_notation.strip('[]"\'')
     new_path = new_path.replace("']['", replacement_character)

@@ -1,20 +1,20 @@
 import os
 
 import pytest
+from democritus_dates import date_now
+from democritus_file_system import directory_create, directory_delete, file_delete, file_write
 
 from democritus_json import (
-    json_read,
-    json_prettify,
-    json_structure,
-    json_search,
-    json_path_dot_notation_to_bracket_notation,
-    json_path_bracket_notation_to_dot_notation,
     json_files,
-    json_write,
+    json_path_bracket_notation_to_dot_notation,
+    json_path_dot_notation_to_bracket_notation,
+    json_prettify,
+    json_read,
     json_read_first_arg_string_decorator,
+    json_search,
+    json_structure,
+    json_write,
 )
-from democritus_file_system import directory_create, directory_delete, file_read, file_write, file_delete, file_exists
-from democritus_dates import date_now
 
 NON_EXISTENT_FILE_PATH = './foo'
 TEST_DIRECTORY_PATH = './test_files'
@@ -57,7 +57,7 @@ def test_json_write_docs_bad_json():
     try:
         # this will raise an exception because the datetime.datetime object is not JSON serializable
         json_write(EXISTING_FILE_PATH, d)
-    except Exception as e:
+    except Exception:
         # make sure the file at EXISTING_FILE_PATH has its original contents...
         # normally, if we were not using atomic writes, the file at EXISTING_FILE_PATH would have part of the data in d (the part before the datetime.datetime object which caused the failure)...
         # but, because we are using atomic file writes, the file at EXISTING_FILE_PATH keep its original contents
