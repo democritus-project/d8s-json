@@ -1,8 +1,8 @@
 # Democritus JSON
 
-[![PyPI](https://img.shields.io/pypi/v/democritus-json.svg)](https://pypi.python.org/pypi/democritus-json)
-[![Build Status](https://travis-ci.com/democritus-project/democritus-json.svg?branch=main)](https://travis-ci.com/democritus-project/democritus-json)
-[![codecov](https://codecov.io/gh/democritus-project/democritus-json/branch/main/graph/badge.svg?token=V0WOIXRGMM)](https://codecov.io/gh/democritus-project/democritus-json)
+[![PyPI](https://img.shields.io/pypi/v/d8s-json.svg)](https://pypi.python.org/pypi/d8s-json)
+[![Build Status](https://travis-ci.com/democritus-project/d8s-json.svg?branch=main)](https://travis-ci.com/democritus-project/d8s-json)
+[![codecov](https://codecov.io/gh/democritus-project/d8s-json/branch/main/graph/badge.svg?token=V0WOIXRGMM)](https://codecov.io/gh/democritus-project/d8s-json)
 
 Democritus functions<sup>[1]</sup> for working with JSON.
 

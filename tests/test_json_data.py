@@ -4,7 +4,7 @@ import pytest
 from democritus_dates import date_now
 from democritus_file_system import directory_create, directory_delete, file_delete, file_write
 
-from democritus_json import (
+from d8s_json import (
     json_files,
     json_path_bracket_notation_to_dot_notation,
     json_path_dot_notation_to_bracket_notation,
@@ -135,7 +135,7 @@ def test_json_load_file():
     file_delete(file_path)
 
 
-# Jan 2021 - this test is intentionally disabled - see https://github.com/democritus-project/democritus-json/issues/2
+# Jan 2021 - this test is intentionally disabled - see https://github.com/democritus-project/d8s-json/issues/2
 # def test_json_load_url():
 #     # TODO: this test is failing because, when using the request_or_read function, the content of the url below is json and is returned as a dict, which the json_read function tries to process and fails
 #     url = 'https://jsonplaceholder.typicode.com/posts/1'
