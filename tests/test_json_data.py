@@ -1,8 +1,8 @@
 import os
 
 import pytest
-from democritus_dates import date_now
-from democritus_file_system import directory_create, directory_delete, file_delete, file_write
+from d8s_dates import date_now
+from d8s_file_system import directory_create, directory_delete, file_delete, file_write
 
 from d8s_json import (
     json_files,

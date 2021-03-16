@@ -2,12 +2,12 @@ import functools
 import json
 from typing import List
 
-from democritus_file_system import atomic_write, file_exists, file_read
+from d8s_file_system import atomic_write, file_exists, file_read
 
 
 def json_files(directory_path: str) -> List[str]:
     """Find all json files in the given directory_path."""
-    from democritus_file_system import directory_file_names_matching
+    from d8s_file_system import directory_file_names_matching
 
     pattern = '*.json'
     files = directory_file_names_matching(directory_path, pattern)
@@ -78,7 +78,7 @@ def json_pretty_print(json_string):
 
 def _create_json_structure(json_data, path='', json_structure=''):
     """Create a json structure (as a string) for the given json_data."""
-    from democritus_strings import cardinalize
+    from d8s_strings import cardinalize
 
     # the `tab` variable is blank on purpose....
     # I left it in the code so that it can be changed at a later date, but I think it looks best without using the tab

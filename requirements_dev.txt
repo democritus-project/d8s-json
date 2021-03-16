@@ -8,6 +8,6 @@ mypy
 pylint
 pytest
 pytest-cov
-democritus-dates @ git+https://github.com/democritus-project/democritus-dates.git#egg=democritus-dates
+d8s-dates @ git+https://github.com/d8s-project/d8s-dates.git#egg=d8s-dates
 democritus_file_system
 democritus_strings
