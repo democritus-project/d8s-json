@@ -9,6 +9,6 @@ pylint
 pytest
 pytest-cov
 d8s-dates @ git+https://github.com/d8s-project/d8s-dates.git#egg=d8s-dates==0.3.0
-d8s-file_system==0.3.0
+d8s-file_system==0.4.0
 d8s-strings==0.2.0
 bump2version
