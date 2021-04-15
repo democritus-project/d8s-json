@@ -14,9 +14,48 @@ Democritus functions<sup>[1]</sup> for working with JSON.
 
 We use `d8s` as an abbreviation for `democritus` (you can read more about this [here](https://github.com/democritus-project/roadmap#what-is-d8s)).
 
-## Usage
+## Functions
 
-Coming soon...
+  - ```python
+    def json_files(directory_path: str) -> List[str]:
+        """Find all json files in the given directory_path."""
+    ```
+  - ```python
+    def json_read(json_string: str):
+        """."""
+    ```
+  - ```python
+    def json_read_first_arg_string_decorator(func):
+        """Load the first argument as JSON (if it is a string)."""
+    ```
+  - ```python
+    def json_write(file_path, json_content, **kwargs):
+        """Write the json_content to the file_path."""
+    ```
+  - ```python
+    def json_prettify(json_object):
+        """."""
+    ```
+  - ```python
+    def json_pretty_print(json_string):
+        """Pretty print the json so it is readable."""
+    ```
+  - ```python
+    def json_search(json_data, value_to_find):
+        """Find the value_to_find in the json_data."""
+    ```
+  - ```python
+    def json_structure(json_data):
+        """Print out the structure of the given json blob."""
+    ```
+  - ```python
+    def json_path_dot_notation_to_bracket_notation(json_path_dot_notation: str) -> str:
+        """Convert the given json path from dot notation to bracket notation (foo.bar -> ["foo"]["bar"])."""
+    ```
+  - ```python
+    def json_path_bracket_notation_to_dot_notation(json_path_dot_notation: str) -> str:
+        """Convert the given json path from bracket notation to dot notation (["foo"]["bar"] -> foo.bar)."""
+    ```
 
 ## Development
 
