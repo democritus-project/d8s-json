@@ -9,7 +9,7 @@ def json_files(directory_path: str) -> List[str]:
     """Find all json files in the given directory_path."""
     from d8s_file_system import directory_file_names_matching
 
-    pattern = '*.json'
+    pattern = "*.json"
     files = directory_file_names_matching(directory_path, pattern)
 
     return files
@@ -24,15 +24,15 @@ def json_read(json_string: str):
     try:
         return json.loads(json_string)
     except json.JSONDecodeError as e:
-        if 'property name enclosed in double quotes' in str(e):
-            print('> Found a single quote in the json... I\'ll try replacing all single quotes with double quotes')
+        if "property name enclosed in double quotes" in str(e):
+            print("> Found a single quote in the json... I'll try replacing all single quotes with double quotes")
             try:
                 unescaped_single_quote_pattern = r"(?<!\\)'"
                 json_string = re.sub(unescaped_single_quote_pattern, '"', json_string)
                 return json.loads(json_string)
             except json.JSONDecodeError as second_error:
                 print(
-                    '! Even replacing all of the single quotes with double quotes did not work:\n\t{}'.format(
+                    "! Even replacing all of the single quotes with double quotes did not work:\n\t{}".format(
                         second_error
                     )
                 )
@@ -76,33 +76,33 @@ def json_pretty_print(json_string):
     print(json_prettify(json_string))
 
 
-def _create_json_structure(json_data, path='', json_structure=''):
+def _create_json_structure(json_data, path="", json_structure=""):
     """Create a json structure (as a string) for the given json_data."""
     from d8s_strings import cardinalize
 
     # the `tab` variable is blank on purpose....
     # I left it in the code so that it can be changed at a later date, but I think it looks best without using the tab
-    tab = ''
+    tab = ""
     if isinstance(json_data, list):
         for index, i in enumerate(json_data):
-            new_path = path + '[{}]'.format(index)
+            new_path = path + "[{}]".format(index)
             json_structure = _create_json_structure(i, path=new_path, json_structure=json_structure)
     elif isinstance(json_data, dict):
         path = tab + path
         for key, value in json_data.items():
             new_path = path + "['{}']".format(key)
             if isinstance(value, list) or isinstance(value, dict):
-                json_structure = json_structure + '\n{} (list of {} {})'.format(
+                json_structure = json_structure + "\n{} (list of {} {})".format(
                     new_path, len(value), cardinalize(type(value).__name__, len(value))
                 )
                 json_structure = _create_json_structure(value, path=new_path, json_structure=json_structure)
             else:
                 # replace any newlines in the value so that they do not throw off the structure
-                value = value.replace('\n', '\\n')
-                json_structure = json_structure + '\n{}: {}'.format(new_path, value)
+                value = value.replace("\n", "\\n")
+                json_structure = json_structure + "\n{}: {}".format(new_path, value)
     # handle strings, ints, bools, etc...
     else:
-        json_structure = json_structure + '\n{}: {} ({})'.format(path, str(json_data), type(json_data))
+        json_structure = json_structure + "\n{}: {} ({})".format(path, str(json_data), type(json_data))
 
     return json_structure.strip()
 
@@ -114,9 +114,9 @@ def json_search(json_data, value_to_find):
 
     paths = []
 
-    for entry in _json_structure.split('\n'):
-        path = entry.split(':')[0]
-        value = ':'.join(entry.split(':')[1:]).strip()
+    for entry in _json_structure.split("\n"):
+        path = entry.split(":")[0]
+        value = ":".join(entry.split(":")[1:]).strip()
         if value_to_find in value:
             paths.append(path)
 
@@ -135,8 +135,8 @@ def json_structure(json_data):
 
 def json_path_dot_notation_to_bracket_notation(json_path_dot_notation: str) -> str:
     """Convert the given json path from dot notation to bracket notation (foo.bar -> ["foo"]["bar"])."""
-    if json_path_dot_notation == '':
-        return ''
+    if json_path_dot_notation == "":
+        return ""
     replacement_characters = '"]["'
     new_path = f'["{json_path_dot_notation.replace(".", replacement_characters)}"]'
     return new_path
@@ -144,8 +144,8 @@ def json_path_dot_notation_to_bracket_notation(json_path_dot_notation: str) -> s
 
 def json_path_bracket_notation_to_dot_notation(json_path_dot_notation: str) -> str:
     """Convert the given json path from bracket notation to dot notation (["foo"]["bar"] -> foo.bar)."""
-    replacement_character = '.'
-    new_path = json_path_dot_notation.strip('[]"\'')
+    replacement_character = "."
+    new_path = json_path_dot_notation.strip("[]\"'")
     new_path = new_path.replace("']['", replacement_character)
-    new_path = new_path.replace("\"][\"", replacement_character)
+    new_path = new_path.replace('"]["', replacement_character)
     return new_path

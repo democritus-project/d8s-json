@@ -16,10 +16,10 @@ from d8s_json import (
     json_write,
 )
 
-NON_EXISTENT_FILE_PATH = './foo'
-TEST_DIRECTORY_PATH = './test_files'
+NON_EXISTENT_FILE_PATH = "./foo"
+TEST_DIRECTORY_PATH = "./test_files"
 TEST_FILE_CONTENTS = '{"a": 1}'
-TEST_FILE_NAME = 'a.json'
+TEST_FILE_NAME = "a.json"
 EXISTING_FILE_PATH = os.path.join(TEST_DIRECTORY_PATH, TEST_FILE_NAME)
 
 
@@ -42,18 +42,18 @@ def teardown_module():
 
 
 def test_json_files_docs_1():
-    assert json_files(TEST_DIRECTORY_PATH) == ['a.json']
+    assert json_files(TEST_DIRECTORY_PATH) == ["a.json"]
 
 
 def test_json_write_docs_1():
-    d = {'foo': 'bar'}
+    d = {"foo": "bar"}
     json_write(EXISTING_FILE_PATH, d)
     assert json_read(EXISTING_FILE_PATH) == d
 
 
 def test_json_write_docs_bad_json():
     # create a dict that has a datetime.datetime object in it
-    d = {'a': 'foobar', 'b': date_now()}
+    d = {"a": "foobar", "b": date_now()}
     try:
         # this will raise an exception because the datetime.datetime object is not JSON serializable
         json_write(EXISTING_FILE_PATH, d)
@@ -61,53 +61,53 @@ def test_json_write_docs_bad_json():
         # make sure the file at EXISTING_FILE_PATH has its original contents...
         # normally, if we were not using atomic writes, the file at EXISTING_FILE_PATH would have part of the data in d (the part before the datetime.datetime object which caused the failure)...
         # but, because we are using atomic file writes, the file at EXISTING_FILE_PATH keep its original contents
-        assert json_read(EXISTING_FILE_PATH)['a'] == json_read(TEST_FILE_CONTENTS)['a']
+        assert json_read(EXISTING_FILE_PATH)["a"] == json_read(TEST_FILE_CONTENTS)["a"]
 
 
 def test_json_path_bracket_notation_to_dot_notation_1():
-    dot_notation_path = ''
+    dot_notation_path = ""
     result = json_path_bracket_notation_to_dot_notation(dot_notation_path)
-    assert result == ''
+    assert result == ""
 
     dot_notation_path = "['foo']"
     result = json_path_bracket_notation_to_dot_notation(dot_notation_path)
-    assert result == 'foo'
+    assert result == "foo"
 
     dot_notation_path = '["foo"]'
     result = json_path_bracket_notation_to_dot_notation(dot_notation_path)
-    assert result == 'foo'
+    assert result == "foo"
 
     dot_notation_path = "['foo']['bar']"
     result = json_path_bracket_notation_to_dot_notation(dot_notation_path)
-    assert result == 'foo.bar'
+    assert result == "foo.bar"
 
     dot_notation_path = '["foo"]["bar"]'
     result = json_path_bracket_notation_to_dot_notation(dot_notation_path)
-    assert result == 'foo.bar'
+    assert result == "foo.bar"
 
     dot_notation_path = "['foo']['bar']['buzz']"
     result = json_path_bracket_notation_to_dot_notation(dot_notation_path)
-    assert result == 'foo.bar.buzz'
+    assert result == "foo.bar.buzz"
 
     dot_notation_path = '["foo"]["bar"]["buzz"]'
     result = json_path_bracket_notation_to_dot_notation(dot_notation_path)
-    assert result == 'foo.bar.buzz'
+    assert result == "foo.bar.buzz"
 
 
 def test_json_path_dot_notation_to_bracket_notation_1():
-    dot_notation_path = ''
+    dot_notation_path = ""
     result = json_path_dot_notation_to_bracket_notation(dot_notation_path)
-    assert result == ''
+    assert result == ""
 
-    dot_notation_path = 'foo'
+    dot_notation_path = "foo"
     result = json_path_dot_notation_to_bracket_notation(dot_notation_path)
     assert result == '["foo"]'
 
-    dot_notation_path = 'foo.bar'
+    dot_notation_path = "foo.bar"
     result = json_path_dot_notation_to_bracket_notation(dot_notation_path)
     assert result == '["foo"]["bar"]'
 
-    dot_notation_path = 'foo.bar.buzz'
+    dot_notation_path = "foo.bar.buzz"
     result = json_path_dot_notation_to_bracket_notation(dot_notation_path)
     assert result == '["foo"]["bar"]["buzz"]'
 
@@ -116,19 +116,19 @@ def test_json_loads_single_quotes():
     string = "{'test': 'a'}"
     d = json_read(string)
     assert len(d) == 1
-    assert d['test'] == 'a'
+    assert d["test"] == "a"
 
 
 def test_json_loads_double_quotes():
     string = '{"test": "a"}'
     d = json_read(string)
     assert len(d) == 1
-    assert d['test'] == 'a'
+    assert d["test"] == "a"
 
 
 def test_json_load_file():
-    file_path = './a.json'
-    json_data = {'a': 'anthem', 'b': 'be'}
+    file_path = "./a.json"
+    json_data = {"a": "anthem", "b": "be"}
 
     file_write(file_path, json_data)
     assert json_read(file_path) == json_data
@@ -144,41 +144,41 @@ def test_json_load_file():
 
 
 def test_json_prettify_1():
-    assert json_prettify({'test': 'a'}) == '{\n    "test": "a"\n}'
+    assert json_prettify({"test": "a"}) == '{\n    "test": "a"\n}'
 
 
 def test_json_structure_1():
     foo = [
         {
-            '_attributes': {'style': 'text-align:center'},
-            'a': [{'_attributes': {'href': '?id=1349421800'}, '_value': '1349421800'}],
+            "_attributes": {"style": "text-align:center"},
+            "a": [{"_attributes": {"href": "?id=1349421800"}, "_value": "1349421800"}],
         },
-        {'_attributes': {'style': 'text-align:center'}, '_value': '2019-04-04'},
-        {'_attributes': {'style': 'text-align:center'}, '_value': '2019-04-04'},
-        {'_attributes': {'style': 'text-align:center'}, '_value': '2020-04-04'},
+        {"_attributes": {"style": "text-align:center"}, "_value": "2019-04-04"},
+        {"_attributes": {"style": "text-align:center"}, "_value": "2019-04-04"},
+        {"_attributes": {"style": "text-align:center"}, "_value": "2020-04-04"},
         {
-            'a': [
+            "a": [
                 {
-                    '_attributes': {'style': 'white-space:normal', 'href': '?caid=1191'},
-                    '_value': 'C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA',
+                    "_attributes": {"style": "white-space:normal", "href": "?caid=1191"},
+                    "_value": "C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA",
                 }
             ]
         },
     ]
     structure = json_structure(foo)
-    print('structure {}'.format(structure))
-    assert structure.split('\n')[0] == "[0]['_attributes'] (list of 1 dict)"
-    assert structure.split('\n')[16] == "[4]['a'][0]['_attributes'] (list of 2 dicts)"
-    assert structure.split('\n')[-1] == "[4]['a'][0]['_value']: C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA"
+    print("structure {}".format(structure))
+    assert structure.split("\n")[0] == "[0]['_attributes'] (list of 1 dict)"
+    assert structure.split("\n")[16] == "[4]['a'][0]['_attributes'] (list of 2 dicts)"
+    assert structure.split("\n")[-1] == "[4]['a'][0]['_value']: C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA"
 
-    d = {'foo': '\n bar'}
+    d = {"foo": "\n bar"}
     structure = json_structure(d)
-    print('structure {}'.format(structure))
-    assert structure == '''['foo']: \\n bar'''
+    print("structure {}".format(structure))
+    assert structure == """['foo']: \\n bar"""
 
 
 def test_json_structure_2():
-    foo = {'test': [1, '2', {'a': 'b'}]}
+    foo = {"test": [1, "2", {"a": "b"}]}
     assert (
         json_structure(foo)
         == "['test'] (list of 3 lists)\n['test'][0]: 1 (<class 'int'>)\n['test'][1]: 2 (<class 'str'>)\n['test'][2]['a']: b"
@@ -188,29 +188,29 @@ def test_json_structure_2():
 def test_json_search_1():
     foo = [
         {
-            '_attributes': {'style': 'text-align:center'},
-            'a': [{'_attributes': {'href': '?id=1349421800'}, '_value': '1349421800'}],
+            "_attributes": {"style": "text-align:center"},
+            "a": [{"_attributes": {"href": "?id=1349421800"}, "_value": "1349421800"}],
         },
-        {'_attributes': {'style': 'text-align:center'}, '_value': '2019-04-04'},
-        {'_attributes': {'style': 'text-align:center'}, '_value': '2019-04-04'},
-        {'_attributes': {'style': 'text-align:center'}, '_value': '2020-04-04'},
+        {"_attributes": {"style": "text-align:center"}, "_value": "2019-04-04"},
+        {"_attributes": {"style": "text-align:center"}, "_value": "2019-04-04"},
+        {"_attributes": {"style": "text-align:center"}, "_value": "2020-04-04"},
         {
-            'a': [
+            "a": [
                 {
-                    '_attributes': {'style': 'white-space:normal', 'href': '?caid=1191'},
-                    '_value': 'C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA',
+                    "_attributes": {"style": "white-space:normal", "href": "?caid=1191"},
+                    "_value": "C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA",
                 }
             ]
         },
     ]
-    paths = json_search(foo, 'text-align:center')
+    paths = json_search(foo, "text-align:center")
     assert paths == [
         "[0]['_attributes']['style']",
         "[1]['_attributes']['style']",
         "[2]['_attributes']['style']",
         "[3]['_attributes']['style']",
     ]
-    paths = json_search(foo, 'C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA')
+    paths = json_search(foo, "C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA")
     assert paths == ["[4]['a'][0]['_value']"]
 
 
@@ -221,8 +221,8 @@ def json_read_first_arg_string_decorator_test_func_a(a):
 
 
 def test_json_read_first_arg_string_decorator_1():
-    assert json_read_first_arg_string_decorator_test_func_a('{}') == {}
+    assert json_read_first_arg_string_decorator_test_func_a("{}") == {}
     assert json_read_first_arg_string_decorator_test_func_a({}) == {}
     assert json_read_first_arg_string_decorator_test_func_a('[{"name": "Bob", "daring": true}]') == [
-        {'name': 'Bob', 'daring': True}
+        {"name": "Bob", "daring": True}
     ]
